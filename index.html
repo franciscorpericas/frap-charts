@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="F.R.A.P Charts" />
 <title>F.R.A.P Charts</title>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312161c'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23C9A227' font-family='Georgia,serif'%3E%F0%9F%8F%86%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312161c'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23C9A227' font-family='Georgia,serif'%3E🏆%3C/text%3E%3C/svg%3E" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap');
   * { box-sizing: border-box; }
@@ -33,13 +33,13 @@
 const { useReducer, useEffect, useRef, useState } = React;
 
 const STORAGE_KEY = "frap-charts-data";
-const MEDALS = ["\u{1F947}", "\u{1F948}", "\u{1F949}"];
+const MEDALS = ["🥇", "🥈", "🥉"];
 
 const INITIAL_STATE = {
   loaded: false,
   categories: [
     { id: "filmes", name: "Filmes" },
-    { id: "albuns", name: "\u00c1lbuns" },
+    { id: "albuns", name: "Álbuns" },
     { id: "lol", name: "League Esports" },
   ],
   items: [],
@@ -215,7 +215,7 @@ function FrapCharts() {
       const dataUrl = await compressImage(file);
       dispatch({ type: "UPDATE_ITEM", id: detailFor, patch: { photo: dataUrl } });
     } catch (err) {
-      setPhotoError("N\u00e3o consegui processar essa imagem.");
+      setPhotoError("Não consegui processar essa imagem.");
     }
   }
 
@@ -235,7 +235,7 @@ function FrapCharts() {
             <input autoFocus value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addCategory()} placeholder="Nome da categoria" style={styles.newCatInput} />
             <button onClick={addCategory} style={styles.smallBtn}>+</button>
-            <button onClick={() => setAddingCategory(false)} style={styles.smallBtn}>\u00d7</button>
+            <button onClick={() => setAddingCategory(false)} style={styles.smallBtn}>×</button>
           </div>
         ) : (
           <button onClick={() => setAddingCategory(true)} style={styles.addCatBtn}>+ categoria</button>
@@ -256,12 +256,12 @@ function FrapCharts() {
                 <div style={styles.rowMain}>
                   <button onClick={() => setDetailFor(item.id)} style={styles.itemNameBtn}><span style={styles.itemName}>{item.name}</span></button>
                   {item.comment && <span style={styles.commentPreview}>{item.comment}</span>}
-                  <button onClick={() => setDetailFor(item.id)} style={styles.timeBadge}>\u23f1 {daysSince(item.positionSince)} nesta posi\u00e7\u00e3o</button>
+                  <button onClick={() => setDetailFor(item.id)} style={styles.timeBadge}>⏱ {daysSince(item.positionSince)} nesta posição</button>
                 </div>
                 <div style={styles.rowActions}>
-                  <button className="icon-btn" style={styles.iconBtn} onClick={() => dispatch({ type: "MOVE_ITEM", id: item.id, direction: -1 })} disabled={idx === 0}>\u25b2</button>
-                  <button className="icon-btn" style={styles.iconBtn} onClick={() => dispatch({ type: "MOVE_ITEM", id: item.id, direction: 1 })} disabled={idx === categoryItems.length - 1}>\u25bc</button>
-                  <button className="icon-btn" style={styles.iconBtn} onClick={() => dispatch({ type: "REMOVE_ITEM", id: item.id })}>\ud83d\uddd1</button>
+                  <button className="icon-btn" style={styles.iconBtn} onClick={() => dispatch({ type: "MOVE_ITEM", id: item.id, direction: -1 })} disabled={idx === 0}>▲</button>
+                  <button className="icon-btn" style={styles.iconBtn} onClick={() => dispatch({ type: "MOVE_ITEM", id: item.id, direction: 1 })} disabled={idx === categoryItems.length - 1}>▼</button>
+                  <button className="icon-btn" style={styles.iconBtn} onClick={() => dispatch({ type: "REMOVE_ITEM", id: item.id })}>🗑</button>
                 </div>
               </li>
             ))}
@@ -276,14 +276,14 @@ function FrapCharts() {
 
         {state.categories.length > 1 && (
           <button onClick={() => dispatch({ type: "REMOVE_CATEGORY", id: state.activeCategory })} style={styles.removeCatBtn}>
-            Remover categoria \"{activeCatObj && activeCatObj.name}\"
+            Remover categoria "{activeCatObj && activeCatObj.name}"
           </button>
         )}
 
         <div style={styles.statusRow}>
-          {status === "saving" && <span style={styles.statusSaving}>Salvando\u2026</span>}
-          {status === "saved" && <span style={styles.statusSaved}>Salvo \u2713</span>}
-          {status === "error" && <span style={{ ...styles.statusSaving, color: "#C1543C" }}>N\u00e3o consegui salvar neste dispositivo.</span>}
+          {status === "saving" && <span style={styles.statusSaving}>Salvando…</span>}
+          {status === "saved" && <span style={styles.statusSaved}>Salvo ✓</span>}
+          {status === "error" && <span style={{ ...styles.statusSaving, color: "#C1543C" }}>Não consegui salvar neste dispositivo.</span>}
         </div>
       </main>
 
@@ -292,7 +292,7 @@ function FrapCharts() {
           <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>{detailItem.name}</h2>
-              <button onClick={() => setDetailFor(null)} style={styles.smallBtn}>\u00d7</button>
+              <button onClick={() => setDetailFor(null)} style={styles.smallBtn}>×</button>
             </div>
 
             <div style={styles.photoSection}>
@@ -303,7 +303,7 @@ function FrapCharts() {
                 </div>
               ) : (
                 <label style={styles.photoUploadLabel}>
-                  \ud83d\udcf7 <span>Adicionar foto</span>
+                  📷 <span>Adicionar foto</span>
                   <input type="file" accept="image/*" onChange={handlePhotoChange} style={{ display: "none" }} />
                 </label>
               )}
@@ -312,11 +312,11 @@ function FrapCharts() {
 
             <textarea value={commentDraft} onChange={(e) => setCommentDraft(e.target.value)}
               onBlur={() => dispatch({ type: "UPDATE_ITEM", id: detailFor, patch: { comment: commentDraft } })}
-              placeholder="Escreva um coment\u00e1rio sobre este item..." style={styles.commentInput} rows={3} />
+              placeholder="Escreva um comentário sobre este item..." style={styles.commentInput} rows={3} />
 
-            <p style={styles.modalSubtitle}>Hist\u00f3rico de posi\u00e7\u00f5es</p>
+            <p style={styles.modalSubtitle}>Histórico de posições</p>
             {detailItem.history.length === 0 ? (
-              <p style={styles.modalEmpty}>Ainda n\u00e3o mudou de posi\u00e7\u00e3o desde que entrou no ranking.</p>
+              <p style={styles.modalEmpty}>Ainda não mudou de posição desde que entrou no ranking.</p>
             ) : (
               <ul style={styles.historyList}>
                 {[...detailItem.history].reverse().map((h, i) => {
@@ -341,10 +341,10 @@ function FrapCharts() {
               const stats = computeStats(detailItem, currentPos);
               return (
                 <div style={styles.statsBlock}>
-                  <div style={styles.statsRow}><span style={styles.statsLabel}>\ud83e\udd47 Ouro</span><span style={styles.historyDuration}>{stats.gold}</span></div>
-                  <div style={styles.statsRow}><span style={styles.statsLabel}>\ud83e\udd48 Prata</span><span style={styles.historyDuration}>{stats.silver}</span></div>
-                  <div style={styles.statsRow}><span style={styles.statsLabel}>\ud83e\udd49 Bronze</span><span style={styles.historyDuration}>{stats.bronze}</span></div>
-                  <div style={styles.statsRow}><span style={styles.statsLabel}>Posi\u00e7\u00e3o m\u00e9dia</span><span style={styles.historyDuration}>#{stats.avgPosition}</span></div>
+                  <div style={styles.statsRow}><span style={styles.statsLabel}>🥇 Ouro</span><span style={styles.historyDuration}>{stats.gold}</span></div>
+                  <div style={styles.statsRow}><span style={styles.statsLabel}>🥈 Prata</span><span style={styles.historyDuration}>{stats.silver}</span></div>
+                  <div style={styles.statsRow}><span style={styles.statsLabel}>🥉 Bronze</span><span style={styles.historyDuration}>{stats.bronze}</span></div>
+                  <div style={styles.statsRow}><span style={styles.statsLabel}>Posição média</span><span style={styles.historyDuration}>#{stats.avgPosition}</span></div>
                 </div>
               );
             })()}
